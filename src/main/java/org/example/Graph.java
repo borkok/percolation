@@ -4,48 +4,26 @@
 package org.example;
 
 public class Graph {
-	private int[] forest;
-	private int[] treeSize;
+	private final Forest forest;
 
 	public Graph(Segments segments, int pointCount) {
-		initializeForest(pointCount);
+		forest = new Forest(pointCount);
 		segments.forEach(this::union);
 	}
 
-	private void initializeForest(int pointCount) {
-		forest = new int[pointCount];
-		treeSize = new int[pointCount];
-		for (int i = 0; i < pointCount; i++) {
-			forest[i] = i;
-			treeSize[i] = 1;
-		}
-	}
-
 	private void union(Integer x, Integer y) {
-		int rootX = root(x);
-		int rootY = root(y);
+		int rootX = forest.findRootFor(x);
+		int rootY = forest.findRootFor(y);
 
-		int treeSizeX = treeSize[rootX];
-		int treeSizeY = treeSize[rootY];
-
-		if (treeSizeX <= treeSizeY) {
-			forest[rootX] = rootY;
-			treeSize[rootY] = treeSizeX + treeSizeY;
-		} else {
-			forest[rootY] = rootX;
-			treeSize[rootX] = treeSizeX + treeSizeY;
-		}
-	}
-
-	private int root(int point) {
-		int coord = point;
-		while(forest[coord] != coord) {
-			coord = forest[coord];
-		}
-		return coord;
+		forest.putSourceUnderDestination(
+				new Directions(
+						forest.getSmallerTree(rootX, rootY),
+						forest.getLargerTree(rootX, rootY)
+				)
+		);
 	}
 
 	public boolean existsPathFor(Directions directions) {
-		return root(directions.from()) == root(directions.to());
+		return forest.findRootFor(directions.source()) == forest.findRootFor(directions.destination());
 	}
 }

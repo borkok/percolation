@@ -4,19 +4,19 @@
 package org.example;
 
 public class Directions {
-	private final int from;
-	private final int to;
+	private final int source;
+	private final int destination;
 
-	public Directions(int from, int to) {
-		this.from = Integer.min(from, to);
-		this.to = Integer.max(from, to);
+	public Directions(int source, int destination) {
+		this.source = Integer.min(source, destination);
+		this.destination = Integer.max(source, destination);
 	}
 
-	public int from() {
-		return from;
+	public int source() {
+		return source;
 	}
 
-	public int to() {
-		return to;
+	public int destination() {
+		return destination;
 	}
 }
