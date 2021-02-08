@@ -2,13 +2,13 @@ package org.example;
 
 public class UnionFind
 {
-    private final Segments segments;
+    private final Graph graph;
 
-    public UnionFind(Segments segments) {
-        this.segments = segments;
+    public UnionFind(Segments segments, int lastPoint) {
+        this.graph = new Graph(segments, lastPoint);
     }
 
     public boolean findPathFor(Directions directions) {
-        return segments.existsPathFor(directions);
+        return graph.existsPathFor(directions);
     }
 }

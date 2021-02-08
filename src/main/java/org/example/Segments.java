@@ -3,6 +3,8 @@
  */
 package org.example;
 
+import java.util.function.BiConsumer;
+
 public class Segments {
 	private final int[][] input;
 
@@ -10,10 +12,9 @@ public class Segments {
 		this.input = input;
 	}
 
-	public boolean existsPathFor(Directions directions) {
-		if (input.length == 0) {
-			return false;
+	public void forEach(BiConsumer<Integer, Integer> consumer) {
+		for (int[] ints : input) {
+			consumer.accept(ints[0], ints[1]);
 		}
-		return true;
 	}
 }
