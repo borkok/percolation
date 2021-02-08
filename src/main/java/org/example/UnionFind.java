@@ -4,8 +4,8 @@ public class UnionFind
 {
     private final Graph graph;
 
-    public UnionFind(Segments segments, int lastPoint) {
-        this.graph = new Graph(segments, lastPoint);
+    public UnionFind(Segments segments, int pointCount) {
+        this.graph = new Graph(segments, pointCount);
     }
 
     public boolean findPathFor(Directions directions) {
