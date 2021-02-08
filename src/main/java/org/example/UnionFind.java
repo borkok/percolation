@@ -2,11 +2,13 @@ package org.example;
 
 public class UnionFind
 {
-    public UnionFind(Segments input) {
+    private final Segments segments;
 
+    public UnionFind(Segments segments) {
+        this.segments = segments;
     }
 
-    public boolean find(Segment segment) {
-        return false;
+    public boolean findPathFor(Directions directions) {
+        return segments.existsPathFor(directions);
     }
 }

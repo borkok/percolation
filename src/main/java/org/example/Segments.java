@@ -4,6 +4,16 @@
 package org.example;
 
 public class Segments {
+	private final int[][] input;
+
 	public Segments(int[][] input) {
+		this.input = input;
+	}
+
+	public boolean existsPathFor(Directions directions) {
+		if (input.length == 0) {
+			return false;
+		}
+		return true;
 	}
 }

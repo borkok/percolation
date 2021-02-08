@@ -3,11 +3,11 @@
  */
 package org.example;
 
-public class Segment {
+public class Directions {
 	private final Point from;
 	private final Point to;
 
-	public Segment(Point from, Point to) {
+	public Directions(Point from, Point to) {
 		this.from = from;
 		this.to = to;
 	}
