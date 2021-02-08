@@ -1,13 +1,12 @@
 package org.example;
 
-/**
- * Hello world!
- *
- */
 public class UnionFind
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    public UnionFind(int[][] input) {
+
+    }
+
+    public boolean find(int from, int to) {
+        return false;
     }
 }
