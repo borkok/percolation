@@ -13,7 +13,22 @@ public class UnionFindTest {
 		return Stream.of(
 				Arguments.of(new int[][]{}, 10, 5, 9, false),
 				Arguments.of(new int[][]{{4,5}}, 10, 5, 9, false),
-				Arguments.of(new int[][]{{5,9}}, 10, 5, 9, true)
+				Arguments.of(new int[][]{{5,9}}, 10, 5, 9, true),
+				Arguments.of(new int[][]{
+						{0,5},
+						{5,6},
+						{6,7},
+						{19,14},
+						{14,9},
+						{8,9},
+						{3,8},
+						{2,3},
+						{7,2},
+						{7,12},
+						{12,13},
+						{13, 18},
+						{10,15}
+					}, 20, 0, 19, true)
 		);
 	}
 
