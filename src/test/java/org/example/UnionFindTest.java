@@ -18,6 +18,8 @@ public class UnionFindTest {
 	@ParameterizedTest
 	@MethodSource("unionFind_source")
 	public void unionFind_whenNoPoints_expectedFalse(int[][] input, int from, int to, boolean result) {
-		assertEquals(new UnionFind(input).find(from, to), result);
+		Segments segments = new Segments(input);
+		Segment segment = new Segment(new Point(from), new Point(to));
+		assertEquals(new UnionFind(segments).find(segment), result);
 	}
 }
