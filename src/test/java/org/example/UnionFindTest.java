@@ -10,25 +10,41 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UnionFindTest {
 	private static Stream<Arguments> unionFind_source() {
+		int[][] bigGraph = {
+				{7, 2},
+				{0, 5},
+				{5, 6},
+				{6, 7},
+				{19, 14},
+				{14, 9},
+				{8, 9},
+				{3, 8},
+				{2, 3},
+				{7, 12},
+				{12, 13},
+				{13, 18},
+				{10, 15}
+		};
+		int[][] bigGraphWithout72 = {
+				{0, 5},
+				{5, 6},
+				{6, 7},
+				{19, 14},
+				{14, 9},
+				{8, 9},
+				{3, 8},
+				{2, 3},
+				{7, 12},
+				{12, 13},
+				{13, 18},
+				{10, 15}
+		};
 		return Stream.of(
 				Arguments.of(new int[][]{}, 10, 5, 9, false),
 				Arguments.of(new int[][]{{4,5}}, 10, 5, 9, false),
 				Arguments.of(new int[][]{{5,9}}, 10, 5, 9, true),
-				Arguments.of(new int[][]{
-						{0,5},
-						{5,6},
-						{6,7},
-						{19,14},
-						{14,9},
-						{8,9},
-						{3,8},
-						{2,3},
-						{7,2},
-						{7,12},
-						{12,13},
-						{13, 18},
-						{10,15}
-					}, 20, 0, 19, true)
+				Arguments.of(bigGraph, 20, 0, 19, true),
+				Arguments.of(bigGraphWithout72, 20, 0, 19, false)
 		);
 	}
 
