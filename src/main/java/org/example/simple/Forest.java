@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021. BEST S.A. and/or its affiliates. All rights reserved.
  */
-package org.example;
+package org.example.simple;
 
 public class Forest {
 	private int[] forest;
