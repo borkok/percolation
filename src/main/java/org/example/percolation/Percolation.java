@@ -4,6 +4,8 @@
 package org.example.percolation;
 
 public class Percolation {
+	private float p;
+
 	public Percolation(int n) {
 		if (n<=0) {
 			throw new IllegalArgumentException();
@@ -14,10 +16,11 @@ public class Percolation {
 		if (p < 0 || p > 1) {
 			throw new IllegalArgumentException();
 		}
+		this.p = p;
 		return this;
 	}
 
 	public boolean doesPercolate() {
-		return true;
+		return p != 0;
 	}
 }

@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PercolationTest {
 	private static Stream<Arguments> doesPercolate() {
 		return Stream.of(
-				Arguments.of(1, 1f, true)
+				Arguments.of(1, 1f, true),
+				Arguments.of(1, 0f, false)
 		);
 	}
 
