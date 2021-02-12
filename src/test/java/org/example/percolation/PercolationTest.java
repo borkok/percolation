@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,6 +35,47 @@ public class PercolationTest {
 				.makeTrial(p)
 				.doesPercolate();
 		assertEquals(expected, result);
+	}
+
+	private static Stream<Arguments> makeTrial() {
+		return Stream.of(
+				Arguments.of(2, 0.5f, new RandomBoolFake(Arrays.asList(false, true, false, true)),
+						List.of(
+								Segment.of(Coord.FAKE_TOP, Coord.of(2)),
+								Segment.of(Coord.of(2), Coord.of(4)),
+								Segment.of(Coord.of(4), Coord.FAKE_BOTTOM)
+						)
+				),
+				Arguments.of(4, 0.5f, new RandomBoolFake(Arrays.asList(
+								false, true, false, true,
+								false, true, true, false,
+						 		false, true, false, true,
+								true, true, false, false
+						)),
+						List.of(
+								Segment.of(Coord.FAKE_TOP, Coord.of(2)),
+								Segment.of(Coord.FAKE_TOP, Coord.of(4)),
+								Segment.of(Coord.of(2), Coord.of(6)),
+								Segment.of(Coord.of(6), Coord.of(7)),
+								Segment.of(Coord.of(6), Coord.of(10)),
+								Segment.of(Coord.of(10), Coord.of(14)),
+								Segment.of(Coord.of(13), Coord.of(14)),
+								Segment.of(Coord.of(13), Coord.FAKE_BOTTOM),
+								Segment.of(Coord.of(14), Coord.FAKE_BOTTOM)
+						)
+				)
+		);
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	public void makeTrial(int n, float p, RandomBool randomBool, List<Segment> expectedSegments) {
+		Percolation percolation = new Percolation(randomBool)
+				.initMatrix(n)
+				.makeTrial(p);
+		Segments segments = percolation.getSegments();
+		segments.removeAll(expectedSegments);
+		assertThat(segments.isEmpty()).isTrue();
 	}
 
 	@Test

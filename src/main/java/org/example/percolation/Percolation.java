@@ -8,6 +8,7 @@ public class Percolation {
 	private float p;
 	private int n;
 	private BoolMatrix boolMatrix;
+	private Segments segments;
 
 	public Percolation(RandomBool randomBool) {
 		if (randomBool == null) {
@@ -30,6 +31,7 @@ public class Percolation {
 			throw new IllegalArgumentException();
 		}
 		this.p = p;
+		this.segments = new Segments();
 
 		tryOpenCells();
 		return this;
@@ -40,14 +42,16 @@ public class Percolation {
 	}
 
 	private void tryOpenCell(Coord coord) {
-		if (randomBool.next(p)) {
+		if (!randomBool.next(p)) {
 			return;
 		}
 		boolMatrix.open(coord);
-		//jeżeli otwarty, to
-		//ustaw że otwarty
-		//pobierz jego sąsiadów
-		//dodaj do listy odcinków odcinki od puntu do otwartych sąsiadów
+		boolMatrix.findOpenNeighbours(coord)
+				.forEach(openNeighbour -> segments.add(coord, openNeighbour));
+	}
+
+	public Segments getSegments() {
+		return segments;
 	}
 
 	public boolean doesPercolate() {

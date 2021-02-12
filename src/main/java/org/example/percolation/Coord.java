@@ -14,8 +14,8 @@ import java.util.Optional;
 @EqualsAndHashCode
 @ToString
 public class Coord {
-	public static final Coord FALSE_TOP = new Coord(0);
-	public static final Coord FALSE_BOTTOM = new Coord(Integer.MAX_VALUE);
+	public static final Coord FAKE_TOP = new Coord(0);
+	public static final Coord FAKE_BOTTOM = new Coord(Integer.MAX_VALUE);
 	private final int coord;
 
 	public static Coord of(int coord) {
@@ -29,10 +29,18 @@ public class Coord {
 		this.coord = coord;
 	}
 
+	public static Coord min(Coord start, Coord end) {
+		return start.coord <= end.coord ? start : end;
+	}
+
+	public static Coord max(Coord start, Coord end) {
+		return start.coord <= end.coord ? end : start;
+	}
+
 	public Coord findTopNeighbour(int dimension) {
 		int topCoord = coord - dimension;
 		if (topCoord <= 0) {
-			return FALSE_TOP;
+			return FAKE_TOP;
 		}
 		return of(topCoord);
 	}
@@ -54,7 +62,7 @@ public class Coord {
 	public Coord findBottomNeighbour(int dimension) {
 		int bottomCoord = coord + dimension;
 		if (bottomCoord > dimension*dimension || dimension == 1) {
-			return FALSE_BOTTOM;
+			return FAKE_BOTTOM;
 		}
 		return of(bottomCoord);
 	}
@@ -71,5 +79,9 @@ public class Coord {
 	 */
 	public int findCol(int n) {
 		return (coord-1) % n;
+	}
+
+	public boolean isFake() {
+		return equals(FAKE_TOP) || equals(FAKE_BOTTOM);
 	}
 }

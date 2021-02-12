@@ -6,6 +6,7 @@ package org.example.percolation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class BoolMatrix {
 	private final int n;
@@ -48,8 +49,17 @@ public class BoolMatrix {
 	}
 
 	public boolean value(Coord coord) {
+		if (coord.isFake()) {
+			return true;
+		}
 		int row = coord.findRow(n);
 		int col = coord.findCol(n);
 		return matrix[row][col];
+	}
+
+	public List<Coord> findOpenNeighbours(Coord coord) {
+		return findNeighbours(coord).stream()
+				.filter(this::value)
+				.collect(Collectors.toList());
 	}
 }
