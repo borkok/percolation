@@ -36,14 +36,18 @@ public class Percolation {
 	}
 
 	private void tryOpenCells() {
-		//dla każdego punktu w matrix
-		//wylosuj czy otwarty
-		randomBool.next(p);
-		    //jeżeli otwarty, to
-		        //ustaw że otwarty
-		        //pobierz jego sąsiadów
-		        //dodaj do listy odcinków odcinki od puntu do otwartych sąsiadów
-		    //jeżeli zamknięty to nic nie rób bo domyślnie są zamknięte wszystkie
+		boolMatrix.forEach(this::tryOpenCell);
+	}
+
+	private void tryOpenCell(Coord coord) {
+		if (randomBool.next(p)) {
+			return;
+		}
+		boolMatrix.open(coord);
+		//jeżeli otwarty, to
+		//ustaw że otwarty
+		//pobierz jego sąsiadów
+		//dodaj do listy odcinków odcinki od puntu do otwartych sąsiadów
 	}
 
 	public boolean doesPercolate() {

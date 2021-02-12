@@ -40,4 +40,16 @@ public class BoolMatrix {
 	private int count() {
 		return n * n;
 	}
+
+	public void open(Coord coord) {
+		int row = coord.findRow(n);
+		int col = coord.findCol(n);
+		matrix[row][col] = true;
+	}
+
+	public boolean value(Coord coord) {
+		int row = coord.findRow(n);
+		int col = coord.findCol(n);
+		return matrix[row][col];
+	}
 }

@@ -8,6 +8,9 @@ import lombok.ToString;
 
 import java.util.Optional;
 
+/**
+ * 1-based coordinates
+ */
 @EqualsAndHashCode
 @ToString
 public class Coord {
@@ -54,5 +57,19 @@ public class Coord {
 			return FALSE_BOTTOM;
 		}
 		return of(bottomCoord);
+	}
+
+	/**
+	 * 0-based row
+	 */
+	public int findRow(int n) {
+		return (coord-1) / n ;
+	}
+
+	/**
+	 * 0-based col
+	 */
+	public int findCol(int n) {
+		return (coord-1) % n;
 	}
 }

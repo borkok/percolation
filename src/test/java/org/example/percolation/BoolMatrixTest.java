@@ -1,5 +1,6 @@
 package org.example.percolation;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -11,6 +12,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.percolation.Coord.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoolMatrixTest {
 
@@ -38,5 +40,13 @@ public class BoolMatrixTest {
 		AtomicInteger atomicInteger = new AtomicInteger();
 		new BoolMatrix(dimension).forEach(c -> atomicInteger.incrementAndGet());
 		assertThat(atomicInteger.get()).isEqualTo(expected);
+	}
+
+	@ParameterizedTest
+	@CsvSource({"1,1","5,25","5,18"})
+	public void open(int dimension, int coord) {
+		BoolMatrix boolMatrix = new BoolMatrix(dimension);
+		boolMatrix.open(of(coord));
+		assertTrue(boolMatrix.value(of(coord)));
 	}
 }
