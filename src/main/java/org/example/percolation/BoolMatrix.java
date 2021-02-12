@@ -3,6 +3,9 @@
  */
 package org.example.percolation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoolMatrix {
 	private final int n;
 	private final boolean[][] matrix;
@@ -13,10 +16,17 @@ public class BoolMatrix {
 	 * @param dimension dimension
 	 */
 	BoolMatrix(int dimension) {
-		if (dimension<=0) {
+		if (dimension <= 0) {
 			throw new IllegalArgumentException();
 		}
 		this.n = dimension;
 		this.matrix = new boolean[dimension][dimension];
+	}
+
+	List<Coord> findNeighbours(Coord coord) {
+		List<Coord> neighbours = new ArrayList<>(List.of(coord.findTopNeighbour(n), coord.findBottomNeighbour(n)));
+		coord.findLeftNeighbour(n).ifPresent(neighbours::add);
+		coord.findRightNeighbour(n).ifPresent(neighbours::add);
+		return neighbours;
 	}
 }
