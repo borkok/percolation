@@ -5,6 +5,7 @@ package org.example.percolation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BoolMatrix {
 	private final int n;
@@ -28,5 +29,15 @@ public class BoolMatrix {
 		coord.findLeftNeighbour(n).ifPresent(neighbours::add);
 		coord.findRightNeighbour(n).ifPresent(neighbours::add);
 		return neighbours;
+	}
+
+	public void forEach(Consumer<Coord> coordConsumer) {
+		for (int i = 1; i <= count(); i++) {
+			coordConsumer.accept(Coord.of(i));
+		}
+	}
+
+	private int count() {
+		return n * n;
 	}
 }
