@@ -7,6 +7,7 @@ public class Percolation {
 	private final RandomBool randomBool;
 	private float p;
 	private int n;
+	private BoolMatrix boolMatrix;
 
 	public Percolation(RandomBool randomBool) {
 		if (randomBool == null) {
@@ -20,6 +21,7 @@ public class Percolation {
 			throw new IllegalArgumentException();
 		}
 		this.n = n;
+		this.boolMatrix = new BoolMatrix(n);
 		return this;
 	}
 
