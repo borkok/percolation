@@ -8,6 +8,8 @@ import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,7 +41,14 @@ public class Coord {
 		return start.coord <= end.coord ? end : start;
 	}
 
-	public Coord findTopNeighbour(int dimension) {
+	public List<Coord> findMyNeighbours(int dimension) {
+		List<Coord> neighbours = new ArrayList<>(List.of(findTopNeighbour(dimension), findBottomNeighbour(dimension)));
+		findLeftNeighbour(dimension).ifPresent(neighbours::add);
+		findRightNeighbour(dimension).ifPresent(neighbours::add);
+		return neighbours;
+	}
+
+	private Coord findTopNeighbour(int dimension) {
 		int topCoord = coord - dimension;
 		if (topCoord <= 0) {
 			return FAKE_TOP;
@@ -47,21 +56,21 @@ public class Coord {
 		return of(topCoord);
 	}
 
-	public Optional<Coord> findLeftNeighbour(int dimension) {
+	private Optional<Coord> findLeftNeighbour(int dimension) {
 		if (coord % dimension == 1 || coord == 1) {
 			return Optional.empty();
 		}
 		return Optional.of(of(coord - 1));
 	}
 
-	public Optional<Coord> findRightNeighbour(int dimension) {
+	private Optional<Coord> findRightNeighbour(int dimension) {
 		if (coord % dimension == 0) {
 			return Optional.empty();
 		}
 		return Optional.of(of(coord + 1));
 	}
 
-	public Coord findBottomNeighbour(int dimension) {
+	private Coord findBottomNeighbour(int dimension) {
 		int bottomCoord = coord + dimension;
 		if (bottomCoord > dimension*dimension || dimension == 1) {
 			return FAKE_BOTTOM;

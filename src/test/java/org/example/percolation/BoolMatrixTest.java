@@ -29,7 +29,7 @@ public class BoolMatrixTest {
 	@ParameterizedTest
 	@MethodSource("findNeighboursParams")
 	public void findNeighbours(int dimension, int coord, Coord... coords) {
-		List<Coord> neighbours = new BoolMatrix(dimension).findNeighbours(of(coord));
+		List<Coord> neighbours = of(coord).findMyNeighbours(dimension);
 		assertThat(neighbours).containsOnly(coords);
 	}
 
@@ -46,6 +46,6 @@ public class BoolMatrixTest {
 	public void open(int dimension, int coord) {
 		BoolMatrix boolMatrix = new BoolMatrix(dimension);
 		boolMatrix.open(of(coord));
-		assertTrue(boolMatrix.value(of(coord)));
+		assertTrue(boolMatrix.isOpen(of(coord)));
 	}
 }
