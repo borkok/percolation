@@ -5,6 +5,7 @@ package org.example.percolation;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class Segments {
 	private final List<Segment> segments = new LinkedList<>();
@@ -13,11 +14,9 @@ public class Segments {
 		segments.add(Segment.of(start, end));
 	}
 
-	public boolean isEmpty() {
-		return segments.isEmpty();
-	}
-
-	public void removeAll(List<Segment> segmentsToRemove) {
-		segments.removeAll(segmentsToRemove);
+	public void forEach(BiConsumer<Coord, Coord> consumer) {
+		for (Segment segment: segments) {
+			segment.processCoords(consumer);
+		}
 	}
 }

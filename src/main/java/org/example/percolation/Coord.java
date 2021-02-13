@@ -84,4 +84,11 @@ public class Coord {
 	public boolean isFake() {
 		return equals(FAKE_TOP) || equals(FAKE_BOTTOM);
 	}
+
+	public Integer convertToInt(int maxCoord) {
+		if (coord > maxCoord) {
+			return maxCoord;
+		}
+		return coord;
+	}
 }

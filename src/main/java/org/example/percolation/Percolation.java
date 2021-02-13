@@ -3,12 +3,17 @@
  */
 package org.example.percolation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class Percolation {
 	private final RandomBool randomBool;
-	private float p;
-	private int n;
+	private float probability;
+	private int matrixDimension;
 	private BoolMatrix boolMatrix;
 	private Segments segments;
+	private Map<UUID, Boolean> trials = new HashMap<>();
 
 	public Percolation(RandomBool randomBool) {
 		if (randomBool == null) {
@@ -17,12 +22,13 @@ public class Percolation {
 		this.randomBool = randomBool;
 	}
 
-	public Percolation initMatrix(int n) {
-		if (n<=0) {
+	public Percolation reset(int matrixDimension) {
+		if (matrixDimension <= 0) {
 			throw new IllegalArgumentException();
 		}
-		this.n = n;
-		this.boolMatrix = new BoolMatrix(n);
+		this.matrixDimension = matrixDimension;
+		this.boolMatrix = new BoolMatrix(matrixDimension);
+		this.trials = new HashMap<>();
 		return this;
 	}
 
@@ -30,11 +36,30 @@ public class Percolation {
 		if (p < 0 || p > 1) {
 			throw new IllegalArgumentException();
 		}
-		this.p = p;
+		this.probability = p;
 		this.segments = new Segments();
 
 		tryOpenCells();
+		trials.put(generateTrialId(), existsPathFromTopToBottom());
+
 		return this;
+	}
+
+	private UUID generateTrialId() {
+		return UUID.randomUUID();
+	}
+
+	private boolean existsPathFromTopToBottom() {
+		Graph graph = new Graph(segments, countPointsPlusFakes());
+		return graph.existsPathFor(Segment.of(Coord.FAKE_TOP, Coord.FAKE_BOTTOM));
+	}
+
+	public Map<UUID, Boolean> trialsResult() {
+		return trials;
+	}
+
+	private int countPointsPlusFakes() {
+		return matrixDimension * matrixDimension + 2;
 	}
 
 	private void tryOpenCells() {
@@ -42,19 +67,11 @@ public class Percolation {
 	}
 
 	private void tryOpenCell(Coord coord) {
-		if (!randomBool.next(p)) {
+		if (!randomBool.next(probability)) {
 			return;
 		}
 		boolMatrix.open(coord);
 		boolMatrix.findOpenNeighbours(coord)
 				.forEach(openNeighbour -> segments.add(coord, openNeighbour));
-	}
-
-	public Segments getSegments() {
-		return segments;
-	}
-
-	public boolean doesPercolate() {
-		return p != 0;
 	}
 }

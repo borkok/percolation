@@ -3,6 +3,9 @@
  */
 package org.example.simple;
 
+import org.example.common.Directions;
+import org.example.common.Forest;
+
 public class Graph {
 	private final Forest forest;
 

@@ -1,5 +1,7 @@
 package org.example.simple;
 
+import org.example.common.Directions;
+
 public class UnionFind
 {
     private final Graph graph;

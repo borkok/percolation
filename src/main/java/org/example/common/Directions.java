@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021. BEST S.A. and/or its affiliates. All rights reserved.
  */
-package org.example.simple;
+package org.example.common;
 
 public class Directions {
 	private final int source;

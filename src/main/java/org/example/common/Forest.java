@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021. BEST S.A. and/or its affiliates. All rights reserved.
  */
-package org.example.simple;
+package org.example.common;
 
 public class Forest {
 	private int[] forest;
@@ -20,7 +20,7 @@ public class Forest {
 		}
 	}
 
-	int findRootFor(int point) {
+	public int findRootFor(int point) {
 		int coord = point;
 		while(this.forest[coord] != coord) {
 			coord = this.forest[coord];
@@ -28,7 +28,7 @@ public class Forest {
 		return coord;
 	}
 
-	int findTreeSize(int root) {
+	public int findTreeSize(int root) {
 		return treeSize[root];
 	}
 
@@ -37,14 +37,14 @@ public class Forest {
 		treeSize[directions.destination()] = treeSize[directions.source()] + treeSize[directions.destination()];
 	}
 
-	int getSmallerTree(int rootX, int rootY) {
+	public int getSmallerTree(int rootX, int rootY) {
 		if (findTreeSize(rootX) <= findTreeSize(rootY)) {
 			return rootX;
 		}
 		return rootY;
 	}
 
-	int getLargerTree(int rootX, int rootY) {
+	public int getLargerTree(int rootX, int rootY) {
 		if (findTreeSize(rootX) <= findTreeSize(rootY)) {
 			return rootY;
 		}
