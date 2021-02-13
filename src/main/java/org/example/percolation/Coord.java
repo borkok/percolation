@@ -5,6 +5,8 @@ package org.example.percolation;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
 import java.util.Optional;
 
@@ -68,16 +70,17 @@ public class Coord {
 	}
 
 	/**
-	 * 0-based row
+	 * 0-based row and col
 	 */
-	public int findRow(int n) {
+	public RowCol convertToRowCol(int dimension) {
+		return new RowCol(findRow(dimension), findCol(dimension));
+	}
+
+	private int findRow(int n) {
 		return (coord-1) / n ;
 	}
 
-	/**
-	 * 0-based col
-	 */
-	public int findCol(int n) {
+	private int findCol(int n) {
 		return (coord-1) % n;
 	}
 
@@ -86,9 +89,13 @@ public class Coord {
 	}
 
 	public Integer convertToInt(int maxCoord) {
-		if (coord > maxCoord) {
-			return maxCoord;
-		}
-		return coord;
+		return Math.min(coord, maxCoord);
+	}
+
+	@Value
+	@Accessors(fluent = true)
+	public static class RowCol {
+		int row;
+		int col;
 	}
 }

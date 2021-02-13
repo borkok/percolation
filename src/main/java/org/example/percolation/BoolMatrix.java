@@ -43,18 +43,16 @@ public class BoolMatrix {
 	}
 
 	public void open(Coord coord) {
-		int row = coord.findRow(n);
-		int col = coord.findCol(n);
-		matrix[row][col] = true;
+		Coord.RowCol rowCol = coord.convertToRowCol(n);
+		matrix[rowCol.row()][rowCol.col()] = true;
 	}
 
 	public boolean value(Coord coord) {
 		if (coord.isFake()) {
 			return true;
 		}
-		int row = coord.findRow(n);
-		int col = coord.findCol(n);
-		return matrix[row][col];
+		Coord.RowCol rowCol = coord.convertToRowCol(n);
+		return matrix[rowCol.row()][rowCol.col()];
 	}
 
 	public List<Coord> findOpenNeighbours(Coord coord) {
