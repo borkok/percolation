@@ -7,14 +7,18 @@ import org.example.common.Directions;
 import org.example.common.Forest;
 
 public class Graph {
-	private final Forest forest;
+	protected final Forest forest;
+
+	protected Graph(int pointCount) {
+		forest = new Forest(pointCount);
+	}
 
 	public Graph(Segments segments, int pointCount) {
 		forest = new Forest(pointCount);
 		segments.forEach(this::union);
 	}
 
-	private void union(Integer x, Integer y) {
+	protected void union(Integer x, Integer y) {
 		int rootX = forest.findRootFor(x);
 		int rootY = forest.findRootFor(y);
 
@@ -27,6 +31,10 @@ public class Graph {
 	}
 
 	public boolean existsPathFor(Directions directions) {
-		return forest.findRootFor(directions.source()) == forest.findRootFor(directions.destination());
+		return hasPathFor(directions.source(), directions.destination());
+	}
+
+	protected boolean hasPathFor(int start, int end) {
+		return forest.findRootFor(start) == forest.findRootFor(end);
 	}
 }

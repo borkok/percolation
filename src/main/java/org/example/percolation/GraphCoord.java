@@ -3,16 +3,14 @@
  */
 package org.example.percolation;
 
-import org.example.common.Directions;
-import org.example.common.Forest;
+import org.example.simple.Graph;
 
-public class Graph {
-	private final Forest forest;
+public class GraphCoord extends Graph {
 	private final int maxCoord;
 
-	public Graph(Segments segments, int pointCount) {
+	public GraphCoord(Segments segments, int pointCount) {
+		super(pointCount);
 		this.maxCoord = pointCount - 1;
-		forest = new Forest(pointCount);
 		segments.forEach(this::union);
 	}
 
@@ -20,18 +18,6 @@ public class Graph {
 		int x = coordX.convertToInt(maxCoord);
 		int y = coordY.convertToInt(maxCoord);
 		union(x,y);
-	}
-
-	private void union(Integer x, Integer y) {
-		int rootX = forest.findRootFor(x);
-		int rootY = forest.findRootFor(y);
-
-		forest.putSourceUnderDestination(
-				new Directions(
-						forest.getSmallerTree(rootX, rootY),
-						forest.getLargerTree(rootX, rootY)
-				)
-		);
 	}
 
 	public boolean existsPathFor(Segment segment) {
@@ -42,9 +28,5 @@ public class Graph {
 		int start = coordX.convertToInt(maxCoord);
 		int end = coordY.convertToInt(maxCoord);
 		return hasPathFor(start,end);
-	}
-
-	private boolean hasPathFor(int start, int end) {
-		return forest.findRootFor(start) == forest.findRootFor(end);
 	}
 }

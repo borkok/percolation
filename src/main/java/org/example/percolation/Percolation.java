@@ -50,7 +50,7 @@ public class Percolation {
 	}
 
 	private boolean existsPathFromTopToBottom() {
-		Graph graph = new Graph(segments, countPointsPlusFakes());
+		GraphCoord graph = new GraphCoord(segments, countPointsPlusFakes());
 		return graph.existsPathFor(Segment.of(Coord.FAKE_TOP, Coord.FAKE_BOTTOM));
 	}
 
