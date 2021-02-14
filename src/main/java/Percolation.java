@@ -12,18 +12,20 @@ public class Percolation {
 	private final Graph graph;
 	private final int fakeTop = 0;
 	private final int fakeBottom;
+	private final int cellsCount;
 
 	// creates n-by-n grid, with all sites initially blocked
 	public Percolation(int n) {
 		requireAtLeastOne(n);
 		dimension = n;
+		cellsCount = n*n;
 		matrix = new boolean[n][n];
 		graph = new Graph(getPointCount(n));
 		fakeBottom = getPointCount(n)-1;
 	}
 
 	private int getPointCount(int n) {
-		return n*n + 2;
+		return cellsCount + 2;
 	}
 
 	private void requireAtLeastOne(int n) {
@@ -32,9 +34,17 @@ public class Percolation {
 		}
 	}
 
+	//1-based
+	public void open(int cell) {
+		open(findRow(cell), findCol(cell));
+	}
+
 	// opens the site (row, col) if it is not open already
 	public void open(int row, int col) {
 		validate(row, col);
+		if(isOpen(row,col)) {
+			return;
+		}
 		matrix[row-1][col-1] = true;
 		openCellsCount++;
 
@@ -55,10 +65,12 @@ public class Percolation {
 		return isOpen(findRow(n), findCol(n));
 	}
 
+	//1-based row
 	private int findRow(int coord) {
 		return (coord-1) / dimension +1;
 	}
 
+	//1-based col
 	private int findCol(int coord) {
 		return (coord-1) % dimension +1;
 	}
@@ -137,8 +149,11 @@ public class Percolation {
 		return graph.hasPathFor(0, getPointCount(dimension)-1);
 	}
 
+	public double fractionOfOpenedCells() {
+		return 1.0d * openCellsCount / cellsCount;
+	}
 
-	
+
 	////////////// INNER CLASSES //////////////////////
 	private static class Segments {
 		private final int[][] input;
