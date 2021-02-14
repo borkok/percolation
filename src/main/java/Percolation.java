@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +10,8 @@ public class Percolation {
 
 	private final boolean[][] matrix;
 	private final int dimension;
+	private final WeightedQuickUnionUF weightedQuickUnionUF;
 	private int openCellsCount = 0;
-	private final Graph graph;
 	private final int fakeTop = 0;
 	private final int fakeBottom;
 	private final int cellsCount;
@@ -20,8 +22,9 @@ public class Percolation {
 		dimension = n;
 		cellsCount = n*n;
 		matrix = new boolean[n][n];
-		graph = new Graph(getPointCount(n));
 		fakeBottom = getPointCount(n)-1;
+
+		this.weightedQuickUnionUF = new WeightedQuickUnionUF(getPointCount(n));
 	}
 
 	private int getPointCount(int n) {
@@ -49,7 +52,7 @@ public class Percolation {
 		openCellsCount++;
 
 		int openCell = convertToOneDimension(row, col);
-		findOpenNeighbours(openCell).forEach(n -> graph.union(openCell, n));
+		findOpenNeighbours(openCell).forEach(n -> weightedQuickUnionUF.union(openCell, n));
 	}
 
 	private List<Integer> findOpenNeighbours(int cell) {
@@ -146,7 +149,7 @@ public class Percolation {
 
 	// does the system percolate?
 	public boolean percolates() {
-		return graph.hasPathFor(0, getPointCount(dimension)-1);
+		return weightedQuickUnionUF.connected(0, getPointCount(dimension)-1);
 	}
 
 	public double fractionOfOpenedCells() {

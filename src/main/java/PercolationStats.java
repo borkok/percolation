@@ -5,7 +5,7 @@ public class PercolationStats {
 
 	private final int n;
 	private final int trials;
-	private final double trialsResults[];
+	private final double[] trialsResults;
 
 	// perform independent trials on an n-by-n grid
 	public PercolationStats(int n, int trials) {
@@ -28,7 +28,7 @@ public class PercolationStats {
 		Percolation percolation = new Percolation(n);
 
 		while(!percolation.percolates()) {
-			int randomCell = StdRandom.uniform(n*n);
+			int randomCell = StdRandom.uniform(n*n)+1;
 			percolation.open(randomCell);
 		}
 
