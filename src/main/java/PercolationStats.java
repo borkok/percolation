@@ -29,10 +29,10 @@ public class PercolationStats {
 
 		while(!percolation.percolates()) {
 			int randomCell = StdRandom.uniform(n*n)+1;
-			percolation.open(randomCell);
+			percolation.open(randomCell, Integer.MAX_VALUE);
 		}
 
-		return percolation.fractionOfOpenedCells();
+		return 1.0d * percolation.numberOfOpenSites() / (n*n);
 	}
 
 	private void requireAtLeastOne(int n) {
@@ -60,4 +60,19 @@ public class PercolationStats {
 	public double confidenceHi() {
 		return (mean() + 1.96d * stddev()) / Math.sqrt(trials);
 	}
+
+	//Also, include a main() method that takes two command-line arguments n and T,
+	// performs T independent computational experiments (discussed above) on an n-by-n grid,
+	// and prints the sample mean, sample standard deviation, and the 95% confidence interval for the percolation threshold.
+	public static void main(String[] args) {
+		int n = Integer.parseInt(args[0]);
+		int t = Integer.parseInt(args[1]);
+
+		PercolationStats percolationStats = new PercolationStats(n, t);
+
+		System.out.println("Mean: " + percolationStats.mean());
+		System.out.println("Dev: " + percolationStats.stddev());
+		System.out.println("Confidence: [" + percolationStats.confidenceLo() + " - " + percolationStats.confidenceHi() + "]");
+	}
+
 }
