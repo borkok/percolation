@@ -3,6 +3,7 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
+	private static final double CONFIDENCE_95 = 1.96d;
 	private final int n;
 	private final int trials;
 	private final double[] trialsResults;
@@ -53,12 +54,12 @@ public class PercolationStats {
 
 	// low endpoint of 95% confidence interval
 	public double confidenceLo() {
-		return (mean() - 1.96d * stddev()) / Math.sqrt(trials);
+		return (mean() - CONFIDENCE_95 * stddev()) / Math.sqrt(trials);
 	}
 
 	// high endpoint of 95% confidence interval
 	public double confidenceHi() {
-		return (mean() + 1.96d * stddev()) / Math.sqrt(trials);
+		return (mean() + CONFIDENCE_95 * stddev()) / Math.sqrt(trials);
 	}
 
 	//Also, include a main() method that takes two command-line arguments n and T,

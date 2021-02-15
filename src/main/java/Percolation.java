@@ -1,18 +1,14 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.Collectors;
-
 public class Percolation {
 	private static final int FAKES_COUNT = 2;
+	private static final int FAKE_TOP = 0;
+	private static final int NOT_EXISTS = Integer.MAX_VALUE;
 
 	private final boolean[][] matrix;
 	private final int dimension;
 	private final WeightedQuickUnionUF weightedQuickUnionUF;
 	private int openCellsCount = 0;
-	private final int fakeTop;
 	private final int fakeBottom;
 	private final int cellsCount;
 
@@ -22,7 +18,6 @@ public class Percolation {
 		dimension = n;
 		cellsCount = n*n;
 		matrix = new boolean[n][n];
-		fakeTop = 0;
 		fakeBottom = getPointCount()-1;
 
 		this.weightedQuickUnionUF = new WeightedQuickUnionUF(getPointCount());
@@ -45,7 +40,7 @@ public class Percolation {
 
 	// opens the site (row, col) if it is not open already
 	public void open(int row, int col) {
-		if(col == Integer.MAX_VALUE) {
+		if(col == NOT_EXISTS) {
 			open(row);
 			return;
 		}
@@ -57,17 +52,16 @@ public class Percolation {
 		openCellsCount++;
 
 		int openCell = convertToOneDimension(row, col);
-		findOpenNeighbours(openCell).forEach(n -> weightedQuickUnionUF.union(openCell, n));
-	}
-
-	private List<Integer> findOpenNeighbours(int cell) {
-		return findMyNeighbours(cell).stream()
-				.filter(this::isOpen)
-				.collect(Collectors.toList());
+		Integer[] openNeighbours = findMyOpenNeighbours(openCell);
+		for (Integer neighbour : openNeighbours) {
+			if(neighbour != null) {
+				weightedQuickUnionUF.union(openCell, neighbour);
+			}
+		}
 	}
 
 	private boolean isOpen(Integer n) {
-		if(n == fakeTop || n == fakeBottom) {
+		if(n == FAKE_TOP || n == fakeBottom) {
 			return true;
 		}
 		return isOpen(findRow(n), findCol(n));
@@ -83,33 +77,48 @@ public class Percolation {
 		return (coord-1) % dimension +1;
 	}
 
-	private List<Integer> findMyNeighbours(int cell) {
-		List<Integer> neighbours = new ArrayList<>(List.of(findTopNeighbour(cell), findBottomNeighbour(cell)));
-		findLeftNeighbour(cell).ifPresent(neighbours::add);
-		findRightNeighbour(cell).ifPresent(neighbours::add);
+	private Integer[] findMyOpenNeighbours(int cell) {
+		int topNeighbour = findTopNeighbour(cell);
+		int bottomNeighbour = findBottomNeighbour(cell);
+		Integer leftNeighbour = findLeftNeighbour(cell);
+		Integer rightNeighbour = findRightNeighbour(cell);
+
+		Integer[] neighbours = new Integer[4];
+		if (isOpen(topNeighbour)) {
+			neighbours[0] = topNeighbour;
+		}
+		if (isOpen(bottomNeighbour)) {
+			neighbours[1] = bottomNeighbour;
+		}
+		if (leftNeighbour != null && isOpen(leftNeighbour)) {
+			neighbours[2] = leftNeighbour;
+		}
+		if (rightNeighbour != null && isOpen(rightNeighbour)) {
+			neighbours[3] = rightNeighbour;
+		}
 		return neighbours;
 	}
 
 	private int findTopNeighbour(int coord) {
 		int topCoord = coord - dimension;
-		return Math.max(topCoord, fakeTop);
+		return Math.max(topCoord, FAKE_TOP);
 	}
 
-	private OptionalInt findLeftNeighbour(int coord) {
+	private Integer findLeftNeighbour(int coord) {
 		if (coord % dimension == 1 || coord == 1) {
-			return OptionalInt.empty();
+			return null;
 		}
-		return OptionalInt.of(coord - 1);
+		return coord - 1;
 	}
 
-	private OptionalInt findRightNeighbour(int coord) {
+	private Integer findRightNeighbour(int coord) {
 		if (coord % dimension == 0) {
-			return OptionalInt.empty();
+			return null;
 		}
-		return OptionalInt.of(coord + 1);
+		return coord + 1;
 	}
 
-	private Integer findBottomNeighbour(int coord) {
+	private int findBottomNeighbour(int coord) {
 		int bottomCoord = coord + dimension;
 		if (bottomCoord > dimension*dimension || dimension == 1) {
 			return fakeBottom;
@@ -154,6 +163,6 @@ public class Percolation {
 
 	// does the system percolate?
 	public boolean percolates() {
-		return weightedQuickUnionUF.find(fakeTop) == weightedQuickUnionUF.find(fakeBottom);
+		return weightedQuickUnionUF.find(FAKE_TOP) == weightedQuickUnionUF.find(fakeBottom);
 	}
 }
