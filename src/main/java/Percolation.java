@@ -162,7 +162,11 @@ public class Percolation {
 		if(!isOpen(row,col)) {
 			return false;
 		}
-		return weightedQuickUnionUF.find(convertToOneDimension(row,col)) == FAKE_TOP;
+		return areConnected(convertToOneDimension(row,col), FAKE_TOP);
+	}
+
+	private boolean areConnected(int a, int b) {
+		return weightedQuickUnionUF.find(a) == weightedQuickUnionUF.find(b);
 	}
 
 	// returns the number of open sites
@@ -172,6 +176,6 @@ public class Percolation {
 
 	// does the system percolate?
 	public boolean percolates() {
-		return weightedQuickUnionUF.find(FAKE_TOP) == weightedQuickUnionUF.find(fakeBottom);
+		return areConnected(FAKE_TOP, fakeBottom);
 	}
 }
