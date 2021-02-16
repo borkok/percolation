@@ -28,13 +28,13 @@ class AssignementPercolationTest {
 		Percolation percolation = new Percolation(1);
 		assertThat(percolation.numberOfOpenSites()).isEqualTo(0);
 		assertThat(percolation.isOpen(1,1)).isFalse();
-		assertThat(percolation.isFull(1,1)).isTrue();
+		assertThat(percolation.isFull(1,1)).isFalse();
 		assertThat(percolation.percolates()).isFalse();
 
 		percolation.open(1,1);
 		assertThat(percolation.numberOfOpenSites()).isEqualTo(1);
 		assertThat(percolation.isOpen(1,1)).isTrue();
-		assertThat(percolation.isFull(1,1)).isFalse();
+		assertThat(percolation.isFull(1,1)).isTrue();
 		assertThat(percolation.percolates()).isTrue();
 	}
 
@@ -49,25 +49,25 @@ class AssignementPercolationTest {
 		assertThat(percolation.isOpen(2, 1)).isFalse();
 		assertThat(percolation.isOpen(2, 2)).isFalse();
 
-		assertThat(percolation.isFull(1, 1)).isTrue();
-		assertThat(percolation.isFull(1, 2)).isTrue();
-		assertThat(percolation.isFull(2, 1)).isTrue();
-		assertThat(percolation.isFull(2, 2)).isTrue();
+		assertThat(percolation.isFull(1, 1)).isFalse();
+		assertThat(percolation.isFull(1, 2)).isFalse();
+		assertThat(percolation.isFull(2, 1)).isFalse();
+		assertThat(percolation.isFull(2, 2)).isFalse();
 
 		percolation.open(1, 2);
 		assertThat(percolation.numberOfOpenSites()).isEqualTo(1);
 		assertThat(percolation.percolates()).isFalse();
 
 		assertThat(percolation.isOpen(1, 2)).isTrue();
-		assertThat(percolation.isFull(1, 2)).isFalse();
+		assertThat(percolation.isFull(1, 2)).isTrue();
 
 		assertThat(percolation.isOpen(1, 1)).isFalse();
 		assertThat(percolation.isOpen(2, 1)).isFalse();
 		assertThat(percolation.isOpen(2, 2)).isFalse();
 
-		assertThat(percolation.isFull(1, 1)).isTrue();
-		assertThat(percolation.isFull(2, 1)).isTrue();
-		assertThat(percolation.isFull(2, 2)).isTrue();
+		assertThat(percolation.isFull(1, 1)).isFalse();
+		assertThat(percolation.isFull(2, 1)).isFalse();
+		assertThat(percolation.isFull(2, 2)).isFalse();
 	}
 
 	@Test
@@ -90,6 +90,8 @@ class AssignementPercolationTest {
 		percolation.open(4,2);
 		percolation.open(5,3);
 		assertThat(percolation.percolates()).isFalse();
+		assertThat(percolation.isFull(4, 2)).isTrue();
+
 		percolation.open(5,2);
 		assertThat(percolation.percolates()).isTrue();
 	}

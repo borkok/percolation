@@ -54,9 +54,15 @@ public class Percolation {
 		int openCell = convertToOneDimension(row, col);
 		Integer[] openNeighbours = findMyOpenNeighbours(openCell);
 		for (Integer neighbour : openNeighbours) {
-			if(neighbour != null) {
-				weightedQuickUnionUF.union(openCell, neighbour);
-			}
+			union(openCell, neighbour);
+		}
+	}
+
+	private void union(int openCell, Integer neighbour) {
+		if(neighbour != null) {
+			int a = Integer.min(openCell, neighbour);
+			int b = Integer.max(openCell, neighbour);
+			weightedQuickUnionUF.union(a, b);
 		}
 	}
 
@@ -153,7 +159,10 @@ public class Percolation {
 	// is the site (row, col) full?
 	public boolean isFull(int row, int col) {
 		validate(row, col);
-		return !matrix[row-1][col-1];
+		if(!isOpen(row,col)) {
+			return false;
+		}
+		return weightedQuickUnionUF.find(convertToOneDimension(row,col)) == FAKE_TOP;
 	}
 
 	// returns the number of open sites
