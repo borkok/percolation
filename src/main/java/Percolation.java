@@ -168,9 +168,14 @@ public class Percolation {
 
 	// does the system percolate?
 	public boolean percolates() {
+		int fakeTopRoot = weightedQuickUnionUF.find(FAKE_TOP);
+
 		for (int i = 0; i < dimension; i++) {
-			if(areConnected(FAKE_TOP, cellsCount-i)) {
-				return true;
+			if(isOpen(cellsCount-i)) {
+				int cellRoot = weightedQuickUnionUF.find(cellsCount - i);
+				if (fakeTopRoot == cellRoot) {
+					return true;
+				}
 			}
 		}
 		return false;
