@@ -155,7 +155,10 @@ public class Percolation {
 	}
 
 	private boolean areConnected(int a, int b) {
-		return weightedQuickUnionUF.find(a) == weightedQuickUnionUF.find(b);
+		if(isOpen(a) && isOpen(b )) {
+			return weightedQuickUnionUF.find(a) == weightedQuickUnionUF.find(b);
+		}
+		return false;
 	}
 
 	// returns the number of open sites
