@@ -1,7 +1,7 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-	private static final int FAKES_COUNT = 2;
+	private static final int FAKES_COUNT = 1;
 	private static final int FAKE_TOP = 0;
 	private static final int NOT_EXISTS = Integer.MAX_VALUE;
 
@@ -9,7 +9,6 @@ public class Percolation {
 	private final int dimension;
 	private final WeightedQuickUnionUF weightedQuickUnionUF;
 	private int openCellsCount = 0;
-	private final int fakeBottom;
 	private final int cellsCount;
 
 	// creates n-by-n grid, with all sites initially blocked
@@ -18,7 +17,6 @@ public class Percolation {
 		dimension = n;
 		cellsCount = n*n;
 		matrix = new boolean[n][n];
-		fakeBottom = getPointCount()-1;
 
 		this.weightedQuickUnionUF = new WeightedQuickUnionUF(getPointCount());
 	}
@@ -67,7 +65,7 @@ public class Percolation {
 	}
 
 	private boolean isOpen(Integer n) {
-		if(n == FAKE_TOP || n == fakeBottom) {
+		if(n == FAKE_TOP) {
 			return true;
 		}
 		return isOpen(findRow(n), findCol(n));
@@ -85,7 +83,7 @@ public class Percolation {
 
 	private Integer[] findMyOpenNeighbours(int cell) {
 		int topNeighbour = findTopNeighbour(cell);
-		int bottomNeighbour = findBottomNeighbour(cell);
+		Integer bottomNeighbour = findBottomNeighbour(cell);
 		Integer leftNeighbour = findLeftNeighbour(cell);
 		Integer rightNeighbour = findRightNeighbour(cell);
 
@@ -93,7 +91,7 @@ public class Percolation {
 		if (isOpen(topNeighbour)) {
 			neighbours[0] = topNeighbour;
 		}
-		if (isOpen(bottomNeighbour)) {
+		if (bottomNeighbour != null && isOpen(bottomNeighbour)) {
 			neighbours[1] = bottomNeighbour;
 		}
 		if (leftNeighbour != null && isOpen(leftNeighbour)) {
@@ -124,10 +122,10 @@ public class Percolation {
 		return coord + 1;
 	}
 
-	private int findBottomNeighbour(int coord) {
+	private Integer findBottomNeighbour(int coord) {
 		int bottomCoord = coord + dimension;
 		if (bottomCoord > dimension*dimension || dimension == 1) {
-			return fakeBottom;
+			return null;
 		}
 		return bottomCoord;
 	}
@@ -176,6 +174,11 @@ public class Percolation {
 
 	// does the system percolate?
 	public boolean percolates() {
-		return areConnected(FAKE_TOP, fakeBottom);
+		for (int i = 0; i < dimension; i++) {
+			if(areConnected(FAKE_TOP, cellsCount-i)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
