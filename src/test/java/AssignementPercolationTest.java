@@ -1,7 +1,11 @@
+import org.example.common.Directions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.example.common.Directions.of;
 
 class AssignementPercolationTest {
 
@@ -79,20 +83,34 @@ class AssignementPercolationTest {
 	}
 
 	@Test
-	void percolates_5x5() {
-		Percolation percolation = new Percolation(5);
-		percolation.open(1,4);
-		percolation.open(2,3);
-		percolation.open(2,4);
-		percolation.open(3,2);
-		percolation.open(3,3);
-		percolation.open(4,1);
-		percolation.open(4,2);
-		percolation.open(5,3);
+	void percolates_6x6() {
+		Percolation percolation = new Percolation(6);
+		List<Directions> directions = List.of(
+				of(	1	,	6	),
+				of(	2	,	6	),
+				of(	3	,	6	),
+				of(	4	,	6	),
+				of(	5	,	6	),
+				of(	5	,	5	),
+				of(	4	,	4	),
+				of(	3	,	4	),
+				of(	2	,	4	),
+				of(	2	,	3	),
+				of(	2	,	2	),
+				of(	2	,	1	),
+				of(	3	,	1	),
+				of(	4	,	1	),
+				of(	5	,	1	),
+				of(	5	,	2	),
+				of(	6	,	2	),
+				of(	5	,	4	)
+		);
+		open(percolation, directions);
 		assertThat(percolation.percolates()).isFalse();
-		assertThat(percolation.isFull(4, 2)).isTrue();
+		assertThat(percolation.isFull(1, 6)).isTrue();
+	}
 
-		percolation.open(5,2);
-		assertThat(percolation.percolates()).isTrue();
+	private void open(Percolation percolation, List<Directions> directions) {
+		directions.forEach(s -> percolation.open(s.source(), s.destination()));
 	}
 }
