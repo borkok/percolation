@@ -30,10 +30,20 @@ public class PercolationStats {
 
 		while(!percolation.percolates()) {
 			int randomCell = StdRandom.uniform(n*n)+1;
-			percolation.open(randomCell, Integer.MAX_VALUE);
+			percolation.open(findRow(randomCell), findCol(randomCell));
 		}
 
 		return 1.0d * percolation.numberOfOpenSites() / (n*n);
+	}
+
+	//1-based row
+	private int findRow(int coord) {
+		return (coord-1) / n +1;
+	}
+
+	//1-based col
+	private int findCol(int coord) {
+		return (coord-1) % n +1;
 	}
 
 	private void requireAtLeastOne(int n) {

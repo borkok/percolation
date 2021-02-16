@@ -31,17 +31,8 @@ public class Percolation {
 		}
 	}
 
-	//1-based
-	private void open(int cell) {
-		open(findRow(cell), findCol(cell));
-	}
-
 	// opens the site (row, col) if it is not open already
 	public void open(int row, int col) {
-		if(col == NOT_EXISTS) {
-			open(row);
-			return;
-		}
 		validate(row, col);
 		if(isOpen(row,col)) {
 			return;
